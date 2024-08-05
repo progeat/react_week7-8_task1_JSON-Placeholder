@@ -1,0 +1,16 @@
+.item {
+	text-align: left;
+	padding: 20px 30px;
+	border-radius: 50px;
+	font-weight: 500;
+	color: #eee;
+	background-color: #242846;
+}
+
+.item-completed {
+	background-color: #244446;
+}
+
+.item:not(:last-child) {
+	margin-bottom: 10px;
+}
