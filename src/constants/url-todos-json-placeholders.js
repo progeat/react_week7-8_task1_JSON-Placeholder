@@ -1,1 +1,1 @@
-export const URL_TODOS = 'https://jsonplaceholder.typicode.com/todos';
+export const URL_TODOS = 'http://localhost:3005/todos';

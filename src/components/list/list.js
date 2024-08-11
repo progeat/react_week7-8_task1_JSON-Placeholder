@@ -1,24 +1,18 @@
-import { Item, Loader } from '../../components';
-import { useRequestGetTodos } from '../../hooks';
-import { URL_TODOS } from '../../constants';
+import { Item } from '../index';
 import styles from './list.module.css';
 
-export const List = () => {
-	const { todos, isLoading } = useRequestGetTodos(URL_TODOS);
-
+export const List = ({ todos, refreshTodos }) => {
 	return (
-		<>
-			{isLoading ? (
-				<Loader />
-			) : (
-				<ul className={styles.list}>
-					{todos.map(({ id, title, completed }) => (
-						<Item key={id} completed={completed}>
-							{title}
-						</Item>
-					))}
-				</ul>
-			)}
-		</>
+		<ul className={styles.list}>
+			{todos.map(({ id, title, completed }) => (
+				<Item
+					key={id}
+					id={id}
+					title={title}
+					completed={completed}
+					refreshTodos={refreshTodos}
+				/>
+			))}
+		</ul>
 	);
 };

@@ -1,6 +1,8 @@
 .item {
-	text-align: left;
-	padding: 20px 30px;
+	display: flex;
+	justify-content: space-between;
+	min-height: 59px;
+	padding: 20px 20px 20px 30px;
 	border-radius: 50px;
 	font-weight: 500;
 	color: #eee;
@@ -13,4 +15,26 @@
 
 .item:not(:last-child) {
 	margin-bottom: 10px;
+}
+
+.item_button-complete {
+	border: 0;
+	color: #66917a;
+	background-color: inherit;
+	cursor: pointer;
+}
+
+.item_button-complete:hover {
+	color: #42cd83;
+}
+
+.item_button-delete {
+	border: 0;
+	color: #a35f5f;
+	background-color: inherit;
+	cursor: pointer;
+}
+
+.item_button-delete:hover {
+	color: #ff4242;
 }
