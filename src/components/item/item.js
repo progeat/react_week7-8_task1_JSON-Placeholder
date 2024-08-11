@@ -1,13 +1,9 @@
 import { useRequestDeleteTodos, useRequestUpdateTodos } from '../../hooks';
-import { URL_TODOS } from '../../constants';
 import styles from './item.module.css';
 
-export const Item = ({ id, title, completed, refreshTodos }) => {
-	const { isDeletingFlag, onDelete } = useRequestDeleteTodos(URL_TODOS, refreshTodos);
-	const { isUpdatingFlag, onCompleted } = useRequestUpdateTodos(
-		URL_TODOS,
-		refreshTodos,
-	);
+export const Item = ({ id, title, completed }) => {
+	const { isDeletingFlag, onDelete } = useRequestDeleteTodos();
+	const { isUpdatingFlag, onCompleted } = useRequestUpdateTodos();
 
 	return (
 		<li className={styles.item + ' ' + (completed && styles['item-completed'])}>

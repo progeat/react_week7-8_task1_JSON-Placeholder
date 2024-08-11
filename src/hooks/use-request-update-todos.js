@@ -1,20 +1,21 @@
 import { useState } from 'react';
+import { ref, set } from 'firebase/database';
+import { db } from '../firebase';
 
-export const useRequestUpdateTodos = (URL_END_POINT, refreshTodos) => {
+export const useRequestUpdateTodos = () => {
 	const [isUpdatingFlag, setIsUpdatingFlag] = useState(false);
 
 	const onCompleted = (id, title, completed) => {
 		setIsUpdatingFlag(true);
 
-		fetch(`${URL_END_POINT}/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({ title, completed }),
+		const todosDbRef = ref(db, `todos/${id}`);
+
+		set(todosDbRef, {
+			title,
+			completed,
 		})
-			.then((rawResponse) => rawResponse.json())
 			.then((response) => {
 				console.log('The task has been updated', response);
-				refreshTodos();
 			})
 			.finally(() => setIsUpdatingFlag(false));
 	};
