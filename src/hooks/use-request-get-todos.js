@@ -1,20 +1,35 @@
 import { useEffect, useState } from 'react';
+import config from '../config.json';
 
-export const useRequestGetTodos = (URL_END_POINT) => {
+const todosEndPoint = config.baseURL + 'todos/';
+
+export const useRequestGetTodos = () => {
 	const [todos, setTodos] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		setIsLoading(true);
 
-		fetch(URL_END_POINT)
-			.then((responseData) => responseData.json())
+		fetch(todosEndPoint)
+			.then((responseData) => {
+				if (!responseData.ok) {
+					throw Error('could not fetch the data for that resourse');
+				}
+
+				return responseData.json();
+			})
 			.then((todosData) => setTodos(todosData))
+			.catch((error) => {
+				console.error(error);
+				setError(error.message);
+			})
 			.finally(() => setIsLoading(false));
-	}, [URL_END_POINT]);
+	}, []);
 
 	return {
 		todos,
 		isLoading,
+		error,
 	};
 };
