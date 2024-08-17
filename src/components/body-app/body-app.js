@@ -12,35 +12,31 @@ export const BodyApp = () => {
 
 	const newListTodos = getFilteredListTodos(todos, isSortFlag, debouncedValue);
 
+	if (isLoading) return <Loader />;
+
 	return (
 		<>
-			{isLoading ? (
-				<Loader />
-			) : (
-				<>
-					<div className={styles['list-header']}>
-						<button
-							className={
-								styles['button-sort'] +
-								' ' +
-								(isSortFlag && styles['button-sort--active'])
-							}
-							onClick={() => setIsSortFlag(!isSortFlag)}
-						>
-							Sort
-						</button>
-						<span className={styles.span}>|</span>
-						<input
-							type="text"
-							value={searchValue}
-							className={styles['input-search']}
-							placeholder="Search..."
-							onChange={({ target }) => setSearchValue(target.value)}
-						></input>
-					</div>
-					<List todos={newListTodos} />
-				</>
-			)}
+			<div className={styles['list-header']}>
+				<button
+					className={
+						styles['button-sort'] +
+						' ' +
+						(isSortFlag && styles['button-sort--active'])
+					}
+					onClick={() => setIsSortFlag(!isSortFlag)}
+				>
+					Sort
+				</button>
+				<span className={styles.span}>|</span>
+				<input
+					type="text"
+					value={searchValue}
+					className={styles['input-search']}
+					placeholder="Search..."
+					onChange={({ target }) => setSearchValue(target.value)}
+				/>
+			</div>
+			<List todos={newListTodos} />
 		</>
 	);
 };

@@ -5,7 +5,7 @@ import { db } from '../firebase';
 export const useRequestUpdateTodos = () => {
 	const [isUpdatingFlag, setIsUpdatingFlag] = useState(false);
 
-	const onCompleted = (id, title, completed) => {
+	const onUpdating = (id, title, completed) => {
 		setIsUpdatingFlag(true);
 
 		const todosDbRef = ref(db, `todos/${id}`);
@@ -22,6 +22,6 @@ export const useRequestUpdateTodos = () => {
 
 	return {
 		isUpdatingFlag,
-		onCompleted,
+		onUpdating,
 	};
 };
