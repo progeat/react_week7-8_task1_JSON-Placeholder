@@ -1,18 +1,13 @@
 import { useState } from 'react';
 import { useRequestCreateTodo } from '../../hooks/use-request-create-todos';
-import { URL_TODOS } from '../../constants';
 import styles from './form-create-todo.module.css';
 
-export const FormCreateTodo = ({ props }) => {
+export const FormCreateTodo = ({ setTodos }) => {
 	const [newTodo, setNewTodo] = useState('');
 	const [messageError, setMessageError] = useState('');
 
-	const { refreshTodos } = props;
-
-	const { requestCreateTodo, isCreatingFlag } = useRequestCreateTodo(
-		URL_TODOS,
-		refreshTodos,
-	);
+	const { isCreatingFlag, errorCreating, requestCreateTodo } =
+		useRequestCreateTodo(setTodos);
 
 	const onSubmit = (event) => {
 		event.preventDefault();
@@ -38,6 +33,7 @@ export const FormCreateTodo = ({ props }) => {
 
 	return (
 		<form className={styles['form-new-todo']} onSubmit={onSubmit}>
+			{errorCreating && <div className={styles.error}>{errorCreating}</div>}
 			{messageError && <div className={styles.error}>{messageError}</div>}
 			<input
 				type="text"

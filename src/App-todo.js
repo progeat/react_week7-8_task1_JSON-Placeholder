@@ -1,16 +1,18 @@
-import { useState } from 'react';
-import { HeaderApp, BodyApp } from './components';
+import { HeaderApp, BodyApp, Loader } from './components';
+import { useRequestGetTodos } from './hooks';
 import styles from './app-todo.module.css';
 
 export const TodoApp = () => {
-	const [refreshTodosFlag, setRefreshTodosFlag] = useState(false);
-
-	const refreshTodos = () => setRefreshTodosFlag(!refreshTodosFlag);
+	const { todos, setTodos, isLoading, errorGetting } = useRequestGetTodos();
 
 	return (
 		<div className={styles.app}>
-			<HeaderApp refreshTodos={refreshTodos}>TODO List App</HeaderApp>
-			<BodyApp refreshTodosFlag={refreshTodosFlag} refreshTodos={refreshTodos} />
+			<HeaderApp setTodos={setTodos}>TODO List App</HeaderApp>
+			{isLoading ? (
+				<Loader />
+			) : (
+				<BodyApp todos={todos} setTodos={setTodos} errorGetting={errorGetting} />
+			)}
 		</div>
 	);
 };

@@ -1,21 +1,52 @@
+import { useState } from 'react';
 import { useRequestDeleteTodos, useRequestUpdateTodos } from '../../hooks';
-import { URL_TODOS } from '../../constants';
 import styles from './item.module.css';
 
-export const Item = ({ id, title, completed, refreshTodos }) => {
-	const { isDeletingFlag, onDelete } = useRequestDeleteTodos(URL_TODOS, refreshTodos);
-	const { isUpdatingFlag, onCompleted } = useRequestUpdateTodos(
-		URL_TODOS,
-		refreshTodos,
-	);
+export const Item = ({ id, title, completed, setTodos }) => {
+	const [editId, setEditId] = useState('');
+	const [editInputValue, setEditInputValue] = useState(title);
+	const { isDeletingFlag, errorDeleting, onDelete } = useRequestDeleteTodos(setTodos);
+	const { isUpdatingFlag, errorUpdating, onUpdating } = useRequestUpdateTodos(setTodos);
+
+	const errorItem = errorUpdating || errorDeleting;
 
 	return (
 		<li className={styles.item + ' ' + (completed && styles['item-completed'])}>
-			<span>{title}</span>
+			{errorItem && <div className={styles.error}>{errorItem}</div>}
+			{editId ? (
+				<input
+					autoFocus
+					type="text"
+					size="75"
+					className={styles['input-edit']}
+					value={editInputValue}
+					onChange={({ target }) => setEditInputValue(target.value)}
+				/>
+			) : (
+				<span>{title}</span>
+			)}
 			<div className={styles['item_button-wrapp']}>
+				{editId ? (
+					<button
+						className={styles['item_button-edit']}
+						onClick={() => {
+							onUpdating(id, editInputValue, completed);
+							setEditId('');
+						}}
+					>
+						confirm
+					</button>
+				) : (
+					<button
+						className={styles['item_button-edit']}
+						onClick={() => setEditId(id)}
+					>
+						edit
+					</button>
+				)}
 				<button
 					className={styles['item_button-complete']}
-					onClick={() => onCompleted(id, title, (completed = !completed))}
+					onClick={() => onUpdating(id, title, (completed = !completed))}
 					disabled={isUpdatingFlag}
 				>
 					complete

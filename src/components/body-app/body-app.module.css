@@ -3,6 +3,10 @@
 	padding-left: 20px;
 }
 
+.error {
+	color: #cd4242;
+}
+
 .button-sort {
 	text-align: left;
 	margin-bottom: 10px;

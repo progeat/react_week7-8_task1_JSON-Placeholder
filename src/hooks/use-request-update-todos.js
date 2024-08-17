@@ -1,26 +1,46 @@
 import { useState } from 'react';
+import config from '../config.json';
 
-export const useRequestUpdateTodos = (URL_END_POINT, refreshTodos) => {
+export const useRequestUpdateTodos = (setTodos) => {
 	const [isUpdatingFlag, setIsUpdatingFlag] = useState(false);
+	const [errorUpdating, setErrorUpdating] = useState('');
 
-	const onCompleted = (id, title, completed) => {
+	const todosEndpoint = config.baseURL + 'todos/';
+
+	const onUpdating = (id, title, completed) => {
 		setIsUpdatingFlag(true);
 
-		fetch(`${URL_END_POINT}/${id}`, {
+		fetch(`${todosEndpoint}/${id}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json;charset=utf-8' },
 			body: JSON.stringify({ title, completed }),
 		})
-			.then((rawResponse) => rawResponse.json())
-			.then((response) => {
-				console.log('The task has been updated', response);
-				refreshTodos();
+			.then((responseData) => {
+				if (!responseData.ok) {
+					throw Error('data could not be sent to this resource');
+				}
+
+				return responseData.json();
+			})
+			.then((updatedTodo) => {
+				console.log('The task has been updated', updatedTodo);
+				setTodos((prevTodos) =>
+					prevTodos.map((todo) =>
+						todo.id === updatedTodo.id ? updatedTodo : todo,
+					),
+				);
+				setErrorUpdating('');
+			})
+			.catch((error) => {
+				console.error(error);
+				setErrorUpdating(error.message);
 			})
 			.finally(() => setIsUpdatingFlag(false));
 	};
 
 	return {
 		isUpdatingFlag,
-		onCompleted,
+		errorUpdating,
+		onUpdating,
 	};
 };
